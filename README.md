@@ -11,7 +11,7 @@ Trois rôles : **super-admin** (réseau), **RH** (une entreprise), **employé** 
 ### Prérequis
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installé et démarré
-- Port libre : **8001** (application), MySQL interne au réseau Docker
+- Port libre : **8002** (application), MySQL interne au réseau Docker
 
 ### Une seule commande
 
@@ -25,8 +25,8 @@ Premier lancement : téléchargement des images, build du frontend, migrations M
 
 | URL | Rôle |
 |-----|------|
-| http://localhost:8001 | Application (landing + SPA) |
-| http://localhost:8001/api/health | Santé API (`{"status":"ok"}`) |
+| http://localhost:8002 | Application (landing + SPA) |
+| http://localhost:8002/api/health | Santé API (`{"status":"ok"}`) |
 
 Le conteneur **web** (nginx) sert le frontend et proxifie `/api` vers Laravel : **pas besoin de lancer PHP et npm séparément**.
 
@@ -64,11 +64,11 @@ Données créées par `backend/database/seeders/DatabaseSeeder.php` : 2 entrepri
 
 ## Parcours de test manuel (15 min)
 
-1. Ouvrir http://localhost:8001 — parcourir la landing.
+1. Ouvrir http://localhost:8002 — parcourir la landing.
 2. **Connexion** → `rh1@mivoorh.test` / `password` → tableau de bord RH, liste employés, demandes en attente, approuver ou refuser avec commentaire.
 3. **Déconnexion** → `emp1_1@mivoorh.test` / `password` → vérifier le solde, créer une demande d’avance.
 4. **Déconnexion** → `admin@mivoopay.bj` / `password` → activer/désactiver une entreprise, consulter les stats.
-5. **Inscription** http://localhost:8001/register :
+5. **Inscription** http://localhost:8002/register :
    - **RH** : crée une nouvelle entreprise + compte ;
    - **Employé** : choisit une entreprise existante + salaire / plafond.
 
@@ -154,7 +154,7 @@ mivoorh/
 ├── backend/                 # API Laravel (app/, routes/api.php, database/)
 ├── frontend/                # SPA Vue 3 (src/views, src/api, src/stores)
 ├── docker/                  # Dockerfiles, nginx, entrypoint API
-├── docker-compose.yml       # Stack MySQL + API + nginx (port 8001)
+├── docker-compose.yml       # Stack MySQL + API + nginx (port 8002)
 └── README.md
 ```
 
@@ -189,7 +189,7 @@ Hors MVP : reset mot de passe par e-mail, E2E Playwright, paiement MivooPay temp
 
 | Problème | Piste |
 |----------|--------|
-| Port 8001 occupé | Changer `8001:80` dans `docker-compose.yml` |
+| Port 8002 occupé | Changer `8002:80` dans `docker-compose.yml` |
 | Page blanche / API injoignable | `docker compose logs api` puis `docker compose logs web` |
 | Données incohérentes | `docker compose down -v` puis `up --build` |
 | Build frontend échoue | Vérifier `frontend/package-lock.json` présent |
