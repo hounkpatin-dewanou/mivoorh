@@ -6,7 +6,21 @@ Trois rôles : **super-admin** (réseau), **RH** (une entreprise), **employé** 
 
 ---
 
-## Démarrage rapide (recommandé pour les examinateurs)
+## Démo en ligne (production)
+
+Application déployée et prête à tester :
+
+| Lien | Description |
+|------|-------------|
+| **https://mivoorh.kladriva.com** | Application (landing, connexion, espaces RH / employé / admin) |
+| **https://mivoorh.kladriva.com/api/health** | Santé API (`{"status":"ok"}`) |
+| **https://mivoorh.kladriva.com/login** | Connexion directe |
+
+Comptes de démo : voir la section [Comptes de démonstration](#comptes-de-démonstration) (mot de passe **`password`**).
+
+---
+
+## Démarrage rapide (installation locale avec Docker)
 
 ### Prérequis
 
@@ -64,11 +78,13 @@ Données créées par `backend/database/seeders/DatabaseSeeder.php` : 2 entrepri
 
 ## Parcours de test manuel (15 min)
 
-1. Ouvrir http://localhost:8002 — parcourir la landing.
+Utiliser **https://mivoorh.kladriva.com** (production) ou http://localhost:8002 (Docker local).
+
+1. Ouvrir la landing — parcourir la page d’accueil.
 2. **Connexion** → `rh1@mivoorh.test` / `password` → tableau de bord RH, liste employés, demandes en attente, approuver ou refuser avec commentaire.
 3. **Déconnexion** → `emp1_1@mivoorh.test` / `password` → vérifier le solde, créer une demande d’avance.
 4. **Déconnexion** → `admin@mivoopay.bj` / `password` → activer/désactiver une entreprise, consulter les stats.
-5. **Inscription** http://localhost:8002/register :
+5. **Inscription** `/register` (ex. https://mivoorh.kladriva.com/register) :
    - **RH** : crée une nouvelle entreprise + compte ;
    - **Employé** : choisit une entreprise existante + salaire / plafond.
 
