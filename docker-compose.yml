@@ -1,5 +1,6 @@
-# MivooRH — démarrage en une commande : docker compose up --build
-# Application : http://localhost:8002  |  API (proxy) : http://localhost:8002/api
+# MivooRH — docker compose up --build
+# Config API : backend/.env.docker (copié en .env au démarrage)
+# App : http://localhost:8002  |  API : http://localhost:8002/api
 
 services:
   db:
@@ -24,25 +25,12 @@ services:
       context: .
       dockerfile: docker/Dockerfile.api
     restart: unless-stopped
-    environment:
-      APP_NAME: MivooRH
-      APP_ENV: local
-      APP_DEBUG: 'true'
-      APP_URL: http://localhost:8002
-      APP_KEY: base64:qB5+7Q+ME8Cjd1vKTzrFsv1pxwhn6lutJsLsHIIjW5I=
-      LOG_CHANNEL: stderr
-      DB_CONNECTION: mysql
-      DB_HOST: db
-      DB_PORT: '3306'
-      DB_DATABASE: mivoorh
-      DB_USERNAME: mivoorh
-      DB_PASSWORD: mivoorh
-      SESSION_DRIVER: database
-      CACHE_STORE: database
-      QUEUE_CONNECTION: database
-      # En production : APP_URL et FRONTEND_URL=https://mivoorh.kladriva.com
-      FRONTEND_URL: http://localhost:8002
-      SANCTUM_STATEFUL_DOMAINS: localhost,localhost:8002,127.0.0.1,127.0.0.1:8002,mivoorh.kladriva.com
+    env_file:
+      - ./backend/.env.docker
+    # Surcharges optionnelles (prioritaires sur .env.docker) — ex. production :
+    # environment:
+    #   APP_URL: https://mivoorh.kladriva.com
+    #   FRONTEND_URL: https://mivoorh.kladriva.com
     depends_on:
       db:
         condition: service_healthy

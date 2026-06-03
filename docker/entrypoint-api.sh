@@ -2,15 +2,19 @@
 set -e
 cd /var/www/html
 
-# Dossiers Laravel inscriptibles (sessions, logs, cache)
 mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache
 chmod -R 775 storage bootstrap/cache 2>/dev/null || true
 
-if [ ! -f .env ]; then
-  cp .env.docker.example .env 2>/dev/null || cp .env.example .env
+# Source unique Docker : backend/.env.docker
+if [ ! -f .env.docker ]; then
+  echo "ERREUR: fichier .env.docker introuvable dans /var/www/html" >&2
+  exit 1
 fi
 
-# Laravel lit .env en priorité sur les variables Docker : synchroniser la config BDD/API
+echo ">> Configuration depuis .env.docker"
+cp -f .env.docker .env
+
+# Surcharge optionnelle (docker-compose environment / production)
 set_env() {
   key="$1"
   val="$2"
@@ -37,11 +41,16 @@ set_env DB_USERNAME "${DB_USERNAME}"
 set_env DB_PASSWORD "${DB_PASSWORD}"
 set_env FRONTEND_URL "${FRONTEND_URL}"
 set_env SANCTUM_STATEFUL_DOMAINS "${SANCTUM_STATEFUL_DOMAINS}"
+set_env LOG_CHANNEL "${LOG_CHANNEL}"
 
 php artisan config:clear --no-interaction 2>/dev/null || true
 
-echo ">> Attente de MySQL (${DB_HOST})..."
-until mysqladmin ping -h"${DB_HOST}" -u"${DB_USERNAME}" -p"${DB_PASSWORD}" --silent 2>/dev/null; do
+DB_HOST_VAL="${DB_HOST:-db}"
+DB_USER_VAL="${DB_USERNAME:-mivoorh}"
+DB_PASS_VAL="${DB_PASSWORD:-mivoorh}"
+
+echo ">> Attente de MySQL (${DB_HOST_VAL})..."
+until mysqladmin ping -h"${DB_HOST_VAL}" -u"${DB_USER_VAL}" -p"${DB_PASS_VAL}" --silent 2>/dev/null; do
   sleep 2
 done
 
@@ -49,5 +58,5 @@ echo ">> Migrations et données de démo..."
 php artisan migrate --force --no-interaction
 php artisan db:seed --force --no-interaction
 
-echo ">> API Laravel sur :8000 (DB_HOST=${DB_HOST})"
+echo ">> API Laravel sur :8000 (DB_HOST=${DB_HOST_VAL})"
 exec php artisan serve --host=0.0.0.0 --port=8000

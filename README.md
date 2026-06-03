@@ -166,7 +166,8 @@ mivoorh/
 | `backend/database/seeders/DatabaseSeeder.php` | Données de démo |
 | `frontend/src/router/index.js` | Routes et gardes par rôle |
 | `frontend/src/api/axios.js` | Client HTTP + token Bearer |
-| `backend/.env.example` | Variables d’environnement API |
+| `backend/.env.docker` | **Config Docker** (API + MySQL) — copiée en `.env` au démarrage |
+| `backend/.env.example` | Variables pour dev local (XAMPP) |
 | `frontend/.env.example` | URL de l’API pour Vite |
 
 ---
@@ -193,8 +194,8 @@ Hors MVP : reset mot de passe par e-mail, E2E Playwright, paiement MivooPay temp
 | Page blanche / API injoignable | `docker compose logs api` puis `docker compose logs web` |
 | Données incohérentes | `docker compose down -v` puis `up --build` |
 | Build frontend échoue | Vérifier `frontend/package-lock.json` présent |
-| Erreur 500 au login | Rebuild API : `docker compose build api && docker compose up -d` — le `.env` doit avoir `DB_HOST=db` (voir `docker/entrypoint-api.sh`) |
-| Production (domaine) | Dans `docker-compose.yml` : `APP_URL` et `FRONTEND_URL` = `https://votre-domaine.com`, puis `docker compose up -d --build` |
+| Erreur 500 au login | Vérifier `backend/.env.docker` (`DB_HOST=db`) puis `docker compose build api && docker compose up -d` |
+| Production (domaine) | Éditer `backend/.env.docker` : `APP_URL`, `FRONTEND_URL`, `SANCTUM_STATEFUL_DOMAINS` → `https://votre-domaine.com`, puis rebuild |
 
 ---
 
