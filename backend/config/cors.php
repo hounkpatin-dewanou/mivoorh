@@ -6,11 +6,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    // FRONTEND_URL dans .env (Docker : http://localhost:8000, dev Vite : :5173)
+    // FRONTEND_URL dans .env (Docker : http://localhost:8001, dev Vite : :5173)
     'allowed_origins' => array_values(array_filter([
         env('FRONTEND_URL'),
         'http://localhost:5173',
-        'http://localhost:8000',
+        'http://localhost:8001',
     ])),
 
     'allowed_origins_patterns' => [],
