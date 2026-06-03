@@ -193,6 +193,8 @@ Hors MVP : reset mot de passe par e-mail, E2E Playwright, paiement MivooPay temp
 | Page blanche / API injoignable | `docker compose logs api` puis `docker compose logs web` |
 | Données incohérentes | `docker compose down -v` puis `up --build` |
 | Build frontend échoue | Vérifier `frontend/package-lock.json` présent |
+| Erreur 500 au login | Rebuild API : `docker compose build api && docker compose up -d` — le `.env` doit avoir `DB_HOST=db` (voir `docker/entrypoint-api.sh`) |
+| Production (domaine) | Dans `docker-compose.yml` : `APP_URL` et `FRONTEND_URL` = `https://votre-domaine.com`, puis `docker compose up -d --build` |
 
 ---
 

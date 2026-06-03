@@ -11,6 +11,7 @@ return [
         env('FRONTEND_URL'),
         'http://localhost:5173',
         'http://localhost:8002',
+        'https://mivoorh.kladriva.com',
     ])),
 
     'allowed_origins_patterns' => [],

@@ -40,8 +40,9 @@ services:
       SESSION_DRIVER: database
       CACHE_STORE: database
       QUEUE_CONNECTION: database
+      # En production : APP_URL et FRONTEND_URL=https://mivoorh.kladriva.com
       FRONTEND_URL: http://localhost:8002
-      SANCTUM_STATEFUL_DOMAINS: localhost,localhost:8002,127.0.0.1,127.0.0.1:8002
+      SANCTUM_STATEFUL_DOMAINS: localhost,localhost:8002,127.0.0.1,127.0.0.1:8002,mivoorh.kladriva.com
     depends_on:
       db:
         condition: service_healthy
