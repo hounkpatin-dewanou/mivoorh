@@ -1,0 +1,27 @@
+# OS / éditeur
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+.cursor/
+
+# Secrets (ne jamais committer)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env.local
+
+# Dépendances — réinstaller avec composer / npm
+backend/vendor/
+frontend/node_modules/
+
+# Build & artefacts
+frontend/dist/
+backend/.phpunit.result.cache
+backend/.phpunit.cache/
+
+# Logs & base locale
+backend/storage/logs/*.log
+backend/database/*.sqlite*

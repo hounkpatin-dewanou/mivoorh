@@ -1,0 +1,24 @@
+# Image API Laravel (PHP 8.2 CLI + Composer)
+FROM php:8.2-cli-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git unzip curl default-mysql-client \
+    libzip-dev libonig-dev \
+    && docker-php-ext-install pdo_mysql mbstring zip \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+COPY backend/composer.json backend/composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+COPY backend .
+RUN composer dump-autoload --optimize
+
+COPY docker/entrypoint-api.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 8000
+ENTRYPOINT ["/entrypoint.sh"]
