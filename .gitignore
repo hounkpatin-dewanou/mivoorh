@@ -4,7 +4,6 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
-.cursor/
 
 # Secrets (ne jamais committer)
 .env
